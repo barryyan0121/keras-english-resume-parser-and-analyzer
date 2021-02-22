@@ -32,11 +32,11 @@ class AnnotatorGui(Frame):
         line_content = line[0]
 
         line_index_label = Label(self.master, width=10, height=1, text=str(line_index))
-        self.master.create_window(50, line_index * 35, height=40, width=80, window=line_index_label)
+        self.master.create_window(50, line_index * 35, height=40, width=50, window=line_index_label)
 
         line_content_text = Text(self.master, width=100, height=1)
         line_content_text.insert(INSERT, line_content)
-        self.master.create_window(1100, line_index * 35, height=40, width=2000, window=line_content_text)
+        self.master.create_window(1000, line_index * 35, height=40, width=1800, window=line_content_text)
 
         def line_type_button_click(_line_index):
             line_type = table_content[_line_index][1]
@@ -52,10 +52,10 @@ class AnnotatorGui(Frame):
 
         line_type_button = Button(self.master, text="Type: Unknown", width=20,
                                   command=lambda: line_type_button_click(line_index))
-        self.master.create_window(2000, line_index * 35, height=40, width=300, window=line_type_button)
+        self.master.create_window(1150, line_index * 35, height=40, width=150, window=line_type_button)
         line_label_button = Button(self.master, text='Label: Unknown', width=20,
                                    command=lambda: line_label_button_click(line_index))
-        self.master.create_window(2300, line_index * 35, height=40, width=300, window=line_label_button)
+        self.master.create_window(1300, line_index * 35, height=40, width=150, window=line_label_button)
 
         if line[1] != -1:
             line_type_button["text"] = "Type: " + line_types[line[1]]
@@ -66,7 +66,7 @@ class AnnotatorGui(Frame):
 def command_line_annotate(training_data_dir_path, index, file_path, file_content):
     with open(os.path.join(training_data_dir_path, str(index) + '.txt'), 'wt', encoding='utf8') as f:
         for line_index, line in enumerate(file_content):
-            data_type = input('Type for line #' + str(line_index) + ' (options: 0=header 1=meta 2=content):')
+            data_type = input('Type for line #' + str(line_index) + ' (options: 0=content 1=header 2=meta):')
             label = input('Label for line #' + str(line_index) +
                           ' (options: 0=experience 1=knowledge 2=education 3=project 4=others')
             data_type = int(data_type)
@@ -103,10 +103,12 @@ def gui_annotate(training_data_dir_path, index, file_path, file_content):
         if os.path.exists(output_file_path):
             return
         with open(output_file_path, 'wt', encoding='utf8') as f:
+            print("table of content")
             for line in table_content:
                 line_content = line[0]
                 data_type = line[1]
                 label = line[2]
+                print(line_types[data_type] + '\t' + line_labels[label] + '\t' + line_content)
 
                 if data_type == -1 or label == -1:
                     continue

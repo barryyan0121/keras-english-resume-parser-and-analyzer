@@ -1,6 +1,7 @@
 import os
 from keras_en_parser_and_analyzer.library.utility.pdf_utils import pdf_to_text
 from keras_en_parser_and_analyzer.library.utility.docx_utils import docx_to_text
+from keras_en_parser_and_analyzer.library.utility.txt_utils import txt_to_text
 
 
 def read_pdf_and_docx(dir_path, collected=None, command_logging=False, callback=None):
@@ -18,6 +19,11 @@ def read_pdf_and_docx(dir_path, collected=None, command_logging=False, callback=
                 if command_logging:
                     print('extracting text from pdf: ', file_path)
                 txt = pdf_to_text(file_path)
+            elif f.lower().endswith('.txt'):
+                if command_logging:
+                    print('extracting text from txt: ', file_path)
+                txt = txt_to_text(file_path)
+
             if txt is not None and len(txt) > 0:
                 if callback is not None:
                     callback(len(collected), file_path, txt)
